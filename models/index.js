@@ -1,3 +1,4 @@
-// Example:
-// const Department = require('./Department');
-// module.exports = { Department };
+const User = require("./User");
+const Thought = require("./Thought");
+
+module.exports = { User, Thought };
