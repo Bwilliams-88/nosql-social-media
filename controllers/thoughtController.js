@@ -3,7 +3,7 @@ const { Thought, User } = require("../models");
 module.exports = {
   async getThoughts(req, res) {
     try {
-      const courses = await Thought.find();
+      const thoughts = await Thought.find();
       res.json(thoughts);
     } catch (err) {
       res.status(500).json(err);
@@ -63,6 +63,48 @@ module.exports = {
 
       if (!thought) {
         return res.status(404).json({ message: "No thought with this id!" });
+      }
+
+      res.json(thought);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+
+  async addReaction(req, res) {
+    try {
+      console.log("Reaction being added");
+      console.log(req.body);
+      const thought = await Thought.findOneAndUpdate(
+        { _id: req.params.thoughtId },
+        { $addToSet: { thoughts: req.body } },
+        { runValidators: true, new: true }
+      );
+
+      if (!thought) {
+        return res
+          .status(404)
+          .json({ message: "No thought found with that ID" });
+      }
+
+      res.json(thought);
+    } catch (err) {
+      res.stsatus(500).json(err);
+    }
+  },
+
+  async removeReaction(req, res) {
+    try {
+      const thought = await Thought.findOneAndUpdate(
+        { _id: req.params.thoughtId },
+        { $pull: { thought: { thoughtId: req.params.thoughtId } } },
+        { runValidators: true, new: true }
+      );
+
+      if (!thought) {
+        return res
+          .status(404)
+          .json({ message: "No thought found with that ID" });
       }
 
       res.json(thought);

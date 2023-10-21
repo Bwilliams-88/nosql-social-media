@@ -18,12 +18,12 @@ const userSchema = new Schema({
   ],
   thoughts: [
     {
-      _id: [{ ref: "Though" }],
+      _id: [{ ref: "Thought" }],
     },
   ],
   friends: [
     {
-      _id: [{ ref: "User " }],
+      _id: [{ ref: "User" }],
     },
   ],
 });
