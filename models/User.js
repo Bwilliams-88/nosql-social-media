@@ -9,26 +9,21 @@ const userSchema = new Schema({
       required: true,
       validate: {
         validator: function (email) {
-          const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+          const emailRegex = new RegEx(
+            "/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$/",
+            "i"
+          );
           return emailRegex.test(email);
         },
         messsage: "Invalid email format",
       },
     },
   ],
-  thoughts: [
-    {
-      _id: [{ ref: "Thought" }],
-    },
-  ],
-  friends: [
-    {
-      _id: [{ ref: "User" }],
-    },
-  ],
+  thoughts: [{ type: Schema.Types.ObjectId, ref: "Thought" }],
+  friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
 });
 
-postSchema.virtual("friendCount").get(function () {
+userSchema.virtual("friendCount").get(function () {
   return this.friends.length;
 });
 
