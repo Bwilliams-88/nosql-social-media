@@ -1,24 +1,13 @@
 const { Schema, model } = require("mongoose");
 
 const userSchema = new Schema({
-  username: [{ type: String, unique: true, required: true, trim: true }],
-  email: [
-    {
-      type: String,
-      unique: true,
-      required: true,
-      validate: {
-        validator: function (email) {
-          const emailRegex = new RegEx(
-            "/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$/",
-            "i"
-          );
-          return emailRegex.test(email);
-        },
-        messsage: "Invalid email format",
-      },
-    },
-  ],
+  username: { type: String, unique: true, required: true, trim: true },
+  email: {
+    type: String,
+    unique: true,
+    required: true,
+    match: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$/,
+  },
   thoughts: [{ type: Schema.Types.ObjectId, ref: "Thought" }],
   friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
 });
@@ -29,4 +18,4 @@ userSchema.virtual("friendCount").get(function () {
 
 const User = model("User", userSchema);
 
-module.export = User;
+module.exports = User;
